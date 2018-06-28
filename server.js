@@ -2,7 +2,10 @@ const { join } = require('path');
 const express = require('express');
 
 const app = express();
+const router = express.Router();
 const webpack = require('webpack');
+const bodyParser = require('body-parser');
+const logger = require('morgan');
 const webpackMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const webpackConfig = require('./webpack.config.js');
@@ -14,6 +17,14 @@ const PATH = {
   sourceFolder: join(__dirname, 'src'),
   htmlFile: join(__dirname, 'public', 'index.html'),
 };
+
+// middleware
+app
+  .use(router)
+  .use(logger('dev'))
+  .use(bodyParser.urlencoded({ extended: false }))
+  .use(bodyParser.json())
+  .use(express.static(PATH.publicFolder));
 
 if (IS_DEVELOPMENT) {
   const compiler = webpack(webpackConfig);
@@ -31,17 +42,15 @@ if (IS_DEVELOPMENT) {
     },
   });
 
-  app.use(middleware);
-  app.use(webpackHotMiddleware(compiler));
+  app.use(middleware).use(webpackHotMiddleware(compiler));
 
-  app.get('*', (req, res) => {
+  router.get('*', (req, res) => {
     res.write(middleware.fileSystem.readFileSync(PATH.htmlFile));
     res.end();
   });
 }
 
-app.use(express.static(PATH.publicFolder));
-app.get('*', (req, res) => {
+router.get('*', (req, res) => {
   res.sendFile(PATH.htmlFile);
 });
 
