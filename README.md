@@ -1,1 +1,1 @@
-# React Redux Boilerplate
+# React Redux Express Boilerplate
