@@ -6,7 +6,7 @@ const webpack = require('webpack');
 const webpackMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const webpackConfig = require('./webpack.config.js');
-const IS_DEVELOPMENT = require('./tools/constants');
+const { IS_DEVELOPMENT } = require('./tools/constants');
 
 const PORT = process.env.PORT || 3000;
 const PATH = {
