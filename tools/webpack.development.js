@@ -1,13 +1,15 @@
-const { join } = require('path');
-const webpack = require('webpack');
+const { DefinePlugin, HotModuleReplacementPlugin } = require('webpack');
 const { cssModulesHash } = require('../package.json');
-
-const PATH = {
-  postcssConfig: join(__dirname, 'postcss.config.js'),
-};
+const { PATH } = require('./constants');
 
 module.exports = {
   mode: 'development',
+  entry: {
+    bundle: [
+      'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true&overlay=true',
+      `${PATH.src}/index`,
+    ],
+  },
   output: {
     publicPath: '/',
     filename: '[name].js',
@@ -18,20 +20,11 @@ module.exports = {
   watchOptions: {
     aggregateTimeout: 100,
   },
-  devServer: {
-    overlay: true,
-    port: 3000,
-    hot: true,
-    stats: {
-      'errors-only': true,
-    },
-    historyApiFallback: true,
-  },
   plugins: [
-    new webpack.DefinePlugin({
+    new DefinePlugin({
       NODE_ENV: JSON.stringify('development'),
     }),
-    new webpack.HotModuleReplacementPlugin(),
+    new HotModuleReplacementPlugin(),
   ],
   module: {
     rules: [
@@ -57,7 +50,6 @@ module.exports = {
               modules: true,
               importLoaders: 2,
               localIdentName: cssModulesHash,
-              minimize: false,
             },
           },
           'resolve-url-loader',
@@ -83,7 +75,6 @@ module.exports = {
               modules: true,
               importLoaders: 2,
               localIdentName: cssModulesHash,
-              minimize: false,
             },
           },
           'resolve-url-loader',
@@ -103,7 +94,6 @@ module.exports = {
               modules: true,
               importLoaders: 2,
               localIdentName: cssModulesHash,
-              minimize: false,
             },
           },
         ],

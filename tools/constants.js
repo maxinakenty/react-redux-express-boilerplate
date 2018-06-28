@@ -1,4 +1,14 @@
-const IS_DEVELOPMENT =
-  !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
+const { join } = require('path');
 
-module.exports = IS_DEVELOPMENT;
+const IS_DEVELOPMENT = process.env.NODE_ENV === 'development';
+
+const PATH = {
+  src: join(__dirname, '..', 'src'),
+  postcssConfig: join(__dirname, 'postcss.config.js'),
+  public: join(__dirname, '..', 'public'),
+};
+
+module.exports = {
+  IS_DEVELOPMENT,
+  PATH,
+};

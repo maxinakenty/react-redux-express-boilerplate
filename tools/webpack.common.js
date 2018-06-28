@@ -1,23 +1,14 @@
-const { join } = require('path');
-const webpack = require('webpack');
+const { NoEmitOnErrorsPlugin } = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { cssModulesHash } = require('../package.json');
-const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
-
-const PATH = {
-  src: join(__dirname, '..', 'src'),
-};
+const { PATH } = require('./constants');
 
 module.exports = {
-  entry: {
-    bundle: `${PATH.src}/index`,
-  },
   resolve: {
     extensions: ['.js', '.jsx', '.scss'],
   },
   plugins: [
-    new webpack.NoEmitOnErrorsPlugin(),
-    new FriendlyErrorsWebpackPlugin(),
+    new NoEmitOnErrorsPlugin(),
     new HtmlWebpackPlugin({
       title: 'Index',
       template: `${PATH.src}/index.html`,

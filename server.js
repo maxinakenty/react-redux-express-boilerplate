@@ -8,20 +8,26 @@ const webpackHotMiddleware = require('webpack-hot-middleware');
 const webpackConfig = require('./webpack.config.js');
 const IS_DEVELOPMENT = require('./tools/constants');
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
+const PATH = {
+  publicFolder: join(__dirname, 'public'),
+  sourceFolder: join(__dirname, 'src'),
+  htmlFile: join(__dirname, 'public', 'index.html'),
+};
 
 if (IS_DEVELOPMENT) {
   const compiler = webpack(webpackConfig);
   const middleware = webpackMiddleware(compiler, {
     publicPath: webpackConfig.output.publicPath,
-    contentBase: 'src',
+    contentBase: PATH.sourceFolder,
+    noInfo: true,
     stats: {
       colors: true,
       hash: false,
       timings: true,
-      chunks: false,
-      chunkModules: false,
-      modules: false,
+      chunks: true,
+      chunkModules: true,
+      modules: true,
     },
   });
 
@@ -29,16 +35,14 @@ if (IS_DEVELOPMENT) {
   app.use(webpackHotMiddleware(compiler));
 
   app.get('*', (req, res) => {
-    res.write(
-      middleware.fileSystem.readFileSync(join(__dirname, 'public/index.html')),
-    );
+    res.write(middleware.fileSystem.readFileSync(PATH.htmlFile));
     res.end();
   });
 }
 
-app.use(express.static(`${__dirname}/public/`));
+app.use(express.static(PATH.publicFolder));
 app.get('*', (req, res) => {
-  res.sendFile(join(__dirname, '/public/index.html'));
+  res.sendFile(PATH.htmlFile);
 });
 
 app.listen(PORT);
