@@ -5,9 +5,10 @@ const IS_DEVELOPMENT =
 const CSS_MODULES_HASH = '[local]__[hash:base64:8]';
 
 const PATH = {
-  src: join(__dirname, '..', 'src'),
+  src: join(__dirname, '..', 'client', 'src'),
   postcssConfig: join(__dirname, 'postcss.config.js'),
-  public: join(__dirname, '..', 'public'),
+  public: join(__dirname, '..', 'client', 'public'),
+  favicon: join(__dirname, '..', 'client', 'src', 'favicon.png'),
 };
 
 module.exports = {
