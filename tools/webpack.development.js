@@ -1,5 +1,5 @@
-const { DefinePlugin, HotModuleReplacementPlugin } = require('webpack');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const { DefinePlugin, HotModuleReplacementPlugin } = require('webpack');
 const { PATH } = require('./constants');
 
 module.exports = {
